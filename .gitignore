@@ -1,0 +1,4 @@
+venv
+/infrastructure/.terraform/
+/infrastructure/.terraform.lock.hcl
+/infrastructure/terraform.tfstate
