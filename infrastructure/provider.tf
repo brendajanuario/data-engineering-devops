@@ -8,7 +8,7 @@ variable "account_number" {
 
 terraform {
   backend "s3" {
-    bucket = aws_s3_bucket.cognitivo-lake.id
+    bucket = "terraform-ias-cognitivo"
     key    = "terraform/terraform.tfstate"
     region = "us-east-1"
   }

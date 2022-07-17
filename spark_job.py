@@ -1,7 +1,13 @@
 import boto3
 import json
+from pyspark.context import SparkContext
+from awsglue.context import GlueContext
 
-s3_raw_path = "s3://cognitivo-test/raw/users/load.csv"
+sc = SparkContext.getOrCreate()
+glueContext = GlueContext(sc)
+spark = glueContext.spark_session
+
+s3_raw_path = "s3://datalake-cognitivo-dev/raw/users/load.csv"
 options_dict = {
     "header": "true",
     "sep": ",",
@@ -11,7 +17,7 @@ options_dict = {
 
 def ddl_schema():
     s3 = boto3.resource('s3')
-    obj = s3.Object("cognitivo-test", "raw/users/schema/types_mapping.json")
+    obj = s3.Object("datalake-cognitivo-dev", "raw/users/schema/types_mapping.json")
     json_schema = json.load(obj.get()['Body'])
 
     ddl = ''
@@ -35,4 +41,4 @@ df = (
     df.orderBy('update_date', ascending=False)
         .coalesce(1)
         .dropDuplicates(subset=['id'])
-).write.mode("overwrite").format("parquet").save("s3://cognitivo-test/staging/users/")
+).write.mode("overwrite").format("parquet").save("s3://datalake-cognitivo-dev/staging/users/")
