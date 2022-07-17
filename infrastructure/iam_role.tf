@@ -11,20 +11,6 @@ resource "aws_iam_role" "glue" {
       },
       "Effect": "Allow",
       "Sid": ""
-    },
-    {
-        "Action": [
-            "iam:PassRole"
-        ],
-        "Effect": "Allow",
-        "Resource": "arn:aws:iam::*:role/AWSGlueServiceRole*",
-        "Condition": {
-            "StringLike": {
-                "iam:PassedToService": [
-                    "glue.amazonaws.com"
-                ]
-            }
-        }
     }
   ]
 }
