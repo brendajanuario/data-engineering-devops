@@ -18,11 +18,12 @@ resource "aws_glue_job" "cognitivo-users-etl" {
     "--enable-continuous-cloudwatch-log" = "true"
     "--enable-continuous-log-filter"     = "true"
     "--enable-metrics"                   = ""
+    "--job-bookmark-option": "job-bookmark-disable"
   }
   glue_version = "3.0"
   worker_type = "G.2X"
   number_of_workers = 2
-  timeout = 6
+  timeout = 4
 
 }
 
