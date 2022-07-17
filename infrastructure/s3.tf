@@ -1,12 +1,21 @@
 resource "aws_s3_bucket" "log_bucket" {
   bucket = var.log_bucket_name
   acl    = "log-delivery-write"
+  force_destroy = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_s3_bucket" "cognitivo-lake" {
   bucket = "${var.bucket_name}-${var.environment}"
   acl    = "private"
+  force_destroy = true
 
+  lifecycle {
+    create_before_destroy = true
+  }
 
   logging {
     target_bucket = aws_s3_bucket.log_bucket.id
