@@ -22,7 +22,7 @@ resource "aws_glue_job" "cognitivo-users-etl" {
   glue_version = "3.0"
   worker_type = "G.2X"
   number_of_workers = 2
-  timeout = 6
+  timeout = 4
 
 }
 
