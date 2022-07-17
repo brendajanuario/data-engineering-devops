@@ -67,3 +67,29 @@ resource "aws_iam_role_policy" "kms_policy" {
 }
 EOF
 }
+
+resource "aws_iam_role_policy" "iam_policy_users_glue" {
+  name = "iam_policy_users_glue"
+  role = "${aws_iam_role.glue.id}"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement":         {
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:iam::*:role/service-role/AWSGlueServiceRole*"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "iam:PassedToService": [
+                        "glue.amazonaws.com"
+                    ]
+                }
+            }
+        }
+}
+EOF
+}
