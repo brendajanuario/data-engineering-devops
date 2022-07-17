@@ -40,7 +40,22 @@ resource "aws_iam_role_policy" "s3_policy" {
         "${aws_s3_bucket.cognitivo-lake.arn}",
         "${aws_s3_bucket.cognitivo-lake.arn}/*"
       ]
+    },
+    {
+      "Action": [
+          "iam:PassRole"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:iam::*:role/AWSGlueServiceRole*",
+      "Condition": {
+          "StringLike": {
+              "iam:PassedToService": [
+                  "glue.amazonaws.com"
+              ]
+          }
     }
+  }
+
   ]
 }
 EOF
@@ -63,30 +78,6 @@ resource "aws_iam_role_policy" "kms_policy" {
           "${aws_kms_key.cognitivo-datalake_kms.arn}",
           "${aws_s3_bucket.cognitivo-lake.arn}/*"
       ]
-    }
-}
-EOF
-}
-
-resource "aws_iam_role_policy" "iam_glue_passrole_policy" {
-  name = "iam_glue_passrole_policy"
-  role = "${aws_iam_role.glue.id}"
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": {
-        "Action": [
-            "iam:PassRole"
-        ],
-        "Effect": "Allow",
-        "Resource": "arn:aws:iam::*:role/AWSGlueServiceRole*",
-        "Condition": {
-            "StringLike": {
-                "iam:PassedToService": [
-                    "glue.amazonaws.com"
-                ]
-            }
-        }
     }
 }
 EOF
